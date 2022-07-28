@@ -113,6 +113,16 @@
       (args ("n"))
       (doc ""))
     (fun-spec
+      (name "num-truncate-digits")
+      (arity 2)
+      (args ("n" "digits"))
+      (doc ""))
+    (fun-spec
+      (name "num-truncate-place")
+      (arity 2)
+      (args ("n" "place"))
+      (doc ""))
+    (fun-spec
       (name "num-sqrt")
       (arity 1)
       (args ("n"))
@@ -641,6 +651,35 @@ check:
   num-truncate(-3.14) is -3
   num-truncate(~3.14) is-roughly ~3
   num-truncate(~-3.14) is-roughly ~-3
+end
+}
+
+  }
+  @function["num-truncate-digits" #:contract (a-arrow N N N) #:return N]{
+
+Returns the integer part of its argument by providing @pyret{digits} precision in the output. If @pyret{digits} is positive, rounds to that many digits to the right of the decimal point. If @pyret{digits} is negative, rounds that many positions to the @emph{left} of the decimal, replacing them with zeroes.
+
+@examples{
+check: 
+  num-truncate-digits(3.14159, 2) is 3.14
+  num-truncate-digits(-3.14159, 0) is -3
+  num-truncate-digits(12395.14159, -2) is 12300
+  num-truncate-digits(~12395.14159, -3) is-roughly ~12000
+end
+}
+
+  }
+  @function["num-truncate-place" #:contract (a-arrow N N N) #:return N]{
+
+Returns the integer part of its argument by cutting off past @pyret{place} power-of-10 precision in the output. If @pyret{place} is positive, rounds  to the left of the decimal point, replacing them with zeroes. If @pyret{place} is negative, rounds to that many digits to the @emph{right} of the decimal point. 
+
+@examples{
+check: 
+  num-truncate-place(12395.14159, 2) is 12300
+  num-truncate-place(95.14159, 4) is 0
+  num-truncate-place(~12395.14159, 3) is-roughly ~12000
+  num-truncate-place(3.14159, -2) is 3.14
+  num-truncate-place(-3.14159, 0) is -3
 end
 }
 
